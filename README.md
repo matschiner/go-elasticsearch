@@ -1,4 +1,4 @@
-```golang
+```go
 package main
 import "github.com/matschiner/go-elasticsearch"
 
@@ -27,4 +27,9 @@ func main() {
     delete:=client.Delete(elastic.Doc{Index: "test",Type:"test",Id:"42"})
     fmt.Println(delete)
 }
-´´´
+```
+
+```javascript
+var s = "JavaScript syntax highlighting";
+alert(s);
+```
