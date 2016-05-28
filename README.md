@@ -1,4 +1,4 @@
-#Golang Client for Elasticsearch
+#Lightweight Golang Client for Elasticsearch
 
 ##Example Usage
 ```go
