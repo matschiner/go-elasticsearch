@@ -1,5 +1,6 @@
 #Golang Client for Elasticsearch
 
+##Example Usage
 ```go
 package main
 import "github.com/matschiner/go-elasticsearch"
