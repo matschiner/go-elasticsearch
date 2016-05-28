@@ -4,7 +4,8 @@ import "github.com/matschiner/go-elasticsearch"
 
 func main() {
     client := elastic.Create()
-    // to connect to a different Host, Port or Protocol use elastic.Create(elastic.Client{Host: "example.com",Port:"9200",Protocol:"https"})
+    // to connect to a different Host, Port or Protocol use 
+    // elastic.Create(elastic.Client{Host: "example.com",Port:"9200",Protocol:"https"})
 
     //index
     insert := client.Index(elastic.Doc{Index: "test", Type: "test", Id:"42"}, `{
