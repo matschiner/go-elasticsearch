@@ -1,5 +1,6 @@
-package main
-import "github.com/matschiner/go-elasticsearch"
+```golang
+    package main
+    import "github.com/matschiner/go-elasticsearch"
 
     func main() {
         client := elastic.Create()
@@ -26,3 +27,4 @@ import "github.com/matschiner/go-elasticsearch"
         delete:=client.Delete(elastic.Doc{Index: "test",Type:"test",Id:"42"})
         fmt.Println(delete)
     }
+´´´
