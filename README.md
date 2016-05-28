@@ -1,5 +1,8 @@
 # go-elasticsearch
-$
+
+
+
+
 import "github.com/matschiner/go-elasticsearch"
 
 func main() {
@@ -23,4 +26,4 @@ func main() {
 	for _,doc := range r.Hits.Hits {
 		print(doc.Id)
 	}
-}$
+}
