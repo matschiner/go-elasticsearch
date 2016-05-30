@@ -17,7 +17,7 @@ type Query struct {
 	Index, Type, Query string
 	Size               int
 }
-type Insert struct{
+type Insert struct {
 	Index, Type, Values, Id string
 }
 type ResponseSearch struct {
@@ -36,12 +36,13 @@ type ResponseSearch struct {
 type Doc struct {
 	Index, Type, Id string
 }
+
 func Create(in ...Client) Client {
 	var c Client
-	if len(in)==0{
-		c=Client{}
-	}else{
-		c=in[0]
+	if len(in) == 0 {
+		c = Client{}
+	} else {
+		c = in[0]
 	}
 	if c.Host == "" {
 		c.Host = "localhost"
@@ -66,12 +67,12 @@ func (c Client) Search(q Query) ResponseSearch {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	r:=ResponseSearch{}
+	r := ResponseSearch{}
 	err = json.Unmarshal(body, &r)
 	if err != nil {
 		print(err.Error())
@@ -82,9 +83,9 @@ func (c Client) Search(q Query) ResponseSearch {
 
 func (c Client) Index(d Doc, values string) map[string]interface{} {
 	var jsonStr = []byte(values)
-  var url string
-  var req *http.Request
-  var err error
+	var url string
+	var req *http.Request
+	var err error
 
 	if d.Id == "" {
 		url = fmt.Sprintf("%s://%s:%d/%s/%s", c.Protocol, c.Host, c.Port, d.Index, d.Type)
@@ -93,15 +94,15 @@ func (c Client) Index(d Doc, values string) map[string]interface{} {
 		url = fmt.Sprintf("%s://%s:%d/%s/%s/%s", c.Protocol, c.Host, c.Port, d.Index, d.Type, d.Id)
 		req, err = http.NewRequest("PUT", url, bytes.NewBuffer(jsonStr))
 	}
-  // print("1",url)
+	// print("1",url)
 
-  req.Header.Set("Content-Type", "application/json")
-  client := &http.Client{}
-  resp, err := client.Do(req)
-  if err != nil {
-    panic(err)
-  }
-  defer resp.Body.Close()
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
 	r := new(map[string]interface{})
@@ -118,24 +119,24 @@ func (c Client) Index(d Doc, values string) map[string]interface{} {
 
 func (c Client) Delete(d Doc) map[string]interface{} {
 	var jsonStr = []byte(``)
-  var url string
-  var req *http.Request
-  var err error
-	if d.Id!=""{
+	var url string
+	var req *http.Request
+	var err error
+	if d.Id != "" {
 		url = fmt.Sprintf("%s://%s:%d/%s/%s/%s", c.Protocol, c.Host, c.Port, d.Index, d.Type, d.Id)
 		req, err = http.NewRequest("DELETE", url, bytes.NewBuffer(jsonStr))
-	}else{
+	} else {
 		print("No Id specified")
 	}
-  // print("1",url)
+	// print("1",url)
 
-  req.Header.Set("Content-Type", "application/json")
-  client := &http.Client{}
-  resp, err := client.Do(req)
-  if err != nil {
-    panic(err)
-  }
-  defer resp.Body.Close()
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
 	r := new(map[string]interface{})
