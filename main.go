@@ -36,10 +36,6 @@ type ResponseSearch struct {
 type Doc struct {
 	Index, Type, Id string
 }
-type DocExt struct {
-	Doc    Doc
-	Insert string
-}
 
 func Create(in ...Client) Client {
 	var c Client
@@ -152,6 +148,37 @@ func (c Client) BulkIndex(jsonPost []byte) map[string]interface{} {
 
 }
 
+func (c Client) Update(d Doc, values string) map[string]interface{} {
+	var jsonStr = []byte(`{"doc": ` + values + `}`)
+	var url string
+	var req *http.Request
+	var err error
+
+	url = fmt.Sprintf("%s://%s:%d/%s/%s/%s/_update", c.Protocol, c.Host, c.Port, d.Index, d.Type, d.Id)
+	req, err = http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+
+	// print("1",url)
+
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	r := new(map[string]interface{})
+	// r.String = string(body)
+	// m := map[string]string{}
+	err = json.Unmarshal(body, &r)
+	// fmt.Println(r)
+	if err != nil {
+		print(err.Error())
+	}
+	return *r
+
+}
 func (c Client) Delete(d Doc) map[string]interface{} {
 	var jsonStr = []byte(``)
 	var url string
