@@ -100,11 +100,7 @@ func (c Client) Index(d Doc, values string) map[string]interface{} {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-<<<<<<< HEAD
 		fmt.Println(err)
-=======
-		panic(err)
->>>>>>> 978d9f91d16d0d19e68de369ec1d5fd54c637df0
 	}
 	defer resp.Body.Close()
 
